@@ -11,8 +11,11 @@ RUN 	apt-get update && \
 		python && \
 	npm install -g eslint
 
-CMD ls -lA / && ls -lA build && \
+CMD 	usr=$(stat -c "%u" /build) && \
+	grp=$(stat -c "%g" /build) && \
+	ls -lA / && ls -lA build && \
 	cd /build/enigmail && \
 	./configure && \
 	make && \
-	make test
+	make test && \
+	chown -R $usr:$grp /build
